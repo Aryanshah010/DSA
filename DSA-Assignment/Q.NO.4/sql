@@ -1,0 +1,18 @@
+WITH hashtags AS (
+    SELECT
+        unnest(string_to_array(tweet, ' ')) AS hashtag
+    FROM Tweets
+    WHERE tweet_date BETWEEN '2024-02-01' AND '2024-02-29'
+),
+filtered_hashtags AS (
+    SELECT hashtag
+    FROM hashtags
+    WHERE hashtag LIKE '#%'
+)
+SELECT
+    hashtag,
+    COUNT(*) AS count
+FROM filtered_hashtags
+GROUP BY hashtag
+ORDER BY count DESC, hashtag DESC
+LIMIT 3;
